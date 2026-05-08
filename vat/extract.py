@@ -44,24 +44,33 @@ def extract_audio(
     if ext == "mp3":
         cmd.extend(
             [
-                "-ar", "44100",
-                "-ac", "2",
-                "-b:a", "192k",
-                "-codec:a", "libmp3lame",
+                "-ar",
+                "44100",
+                "-ac",
+                "2",
+                "-b:a",
+                "192k",
+                "-codec:a",
+                "libmp3lame",
                 str(output_file),
             ]
         )
     elif ext == "wav":
         cmd.extend(
             [
-                "-ar", "44100",
-                "-ac", "2",
-                "-codec:a", "pcm_s16le",
+                "-ar",
+                "44100",
+                "-ac",
+                "2",
+                "-codec:a",
+                "pcm_s16le",
                 str(output_file),
             ]
         )
     else:
-        raise ValueError(f"Unsupported audio format: {audio_format}. Use 'mp3' or 'wav'.")
+        raise ValueError(
+            f"Unsupported audio format: {audio_format}. Use 'mp3' or 'wav'."
+        )
 
     try:
         subprocess.run(cmd, check=True, capture_output=True, text=True)
@@ -70,6 +79,8 @@ def extract_audio(
     except subprocess.CalledProcessError as e:
         result["error"] = f"ffmpeg failed: {e.stderr}"
     except FileNotFoundError:
-        result["error"] = "ffmpeg not found. Please install ffmpeg and ensure it's in PATH."
+        result["error"] = (
+            "ffmpeg not found. Please install ffmpeg and ensure it's in PATH."
+        )
 
     return result

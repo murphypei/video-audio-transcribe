@@ -73,12 +73,16 @@ Examples:
     args = parser.parse_args()
 
     if not args.inputs and not args.export_cookies:
-        parser.error("No inputs provided. Use --export-cookies or provide URLs/file paths.")
+        parser.error(
+            "No inputs provided. Use --export-cookies or provide URLs/file paths."
+        )
 
     if args.export_cookies:
         result = export_cookies()
         if result["success"]:
-            print(f"Cookies exported: {result['output_file']} ({result['cookie_count']} cookies)")
+            print(
+                f"Cookies exported: {result['output_file']} ({result['cookie_count']} cookies)"
+            )
             sys.exit(0)
         else:
             print(f"Cookie export failed: {result['error']}", file=sys.stderr)

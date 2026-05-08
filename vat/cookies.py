@@ -49,8 +49,10 @@ def export_cookies(
             "--quiet",
             "--no-warnings",
             "--skip-download",
-            "--cookies-from-browser", browser,
-            "--cookies", str(out_path),
+            "--cookies-from-browser",
+            browser,
+            "--cookies",
+            str(out_path),
             "https://www.youtube.com/watch?v=jNQXAC9IVRw",
         ]
         subprocess.run(cmd, capture_output=True, check=False)

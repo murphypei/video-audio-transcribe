@@ -51,7 +51,9 @@ def _build_ytdlp_options(
             "FFmpegExtractAudio": ["-ar", "44100", "ac", "2"]
         }
     else:
-        raise ValueError(f"Unsupported audio format: {audio_format}. Use 'mp3' or 'wav'.")
+        raise ValueError(
+            f"Unsupported audio format: {audio_format}. Use 'mp3' or 'wav'."
+        )
 
     if source == "youtube":
         ydl_opts["extractor_args"] = {
@@ -98,7 +100,11 @@ def _download(
             ydl.download([url])
 
         expected_ext = audio_format.lower()
-        stem = sanitize_filename(output_filename) if output_filename else sanitize_filename(title)
+        stem = (
+            sanitize_filename(output_filename)
+            if output_filename
+            else sanitize_filename(title)
+        )
         output_file = _find_output_file(output_dir, stem, expected_ext)
 
         if output_file:
@@ -164,11 +170,21 @@ def download_audio(
         # Bilibili: always use cookies for best audio quality.
         if source == "youtube":
             success, output_file, error = _download(
-                url, output_dir, audio_format, output_filename, source, use_cookies=False
+                url,
+                output_dir,
+                audio_format,
+                output_filename,
+                source,
+                use_cookies=False,
             )
             if not success and "cookie" in (error or "").lower():
                 success, output_file, error = _download(
-                    url, output_dir, audio_format, output_filename, source, use_cookies=True
+                    url,
+                    output_dir,
+                    audio_format,
+                    output_filename,
+                    source,
+                    use_cookies=True,
                 )
         else:
             success, output_file, error = _download(
