@@ -62,6 +62,9 @@ uv run vat video.mp4 --step extract
 
 # Only transcribe existing audio
 uv run vat audio.mp3 --step transcribe
+
+# Export Chrome cookies to local file (avoids password prompts)
+uv run vat --export-cookies
 ```
 
 ### Options
@@ -72,6 +75,7 @@ uv run vat audio.mp3 --step transcribe
 | `--format` | `mp3` | Audio format: `mp3` or `wav` |
 | `--step` | `all` | Run only one step: `all` / `download` / `extract` / `transcribe` |
 | `--json` | | Output results as JSON lines |
+| `--export-cookies` | | Export Chrome cookies to `~/.config/vat/cookies.txt` |
 
 ## Project Structure
 
@@ -103,6 +107,11 @@ video-audio-transcribe/
 - `yt-dlp` with Chrome cookies for HD and member content
 - Automatic best audio stream selection, FFmpeg conversion to mp3/wav
 
+### Cookies
+- On first run (or after `uv run vat --export-cookies`), Chrome cookies are extracted and saved to `~/.config/vat/cookies.txt`
+- Subsequent runs use the saved file directly — no browser open, no password prompt
+- Priority: explicit `--cookie-file` → saved local file → live browser fallback
+
 ### Local Video
 - `ffmpeg` direct audio track extraction
 - mp3: 44100Hz stereo 192kbps | wav: 44100Hz stereo 16-bit PCM
@@ -119,7 +128,7 @@ video-audio-transcribe/
 | `403 Forbidden` (YouTube) | Check Chrome is logged into YouTube; multi `player_client` fallback is already configured |
 | `ffmpeg not found` | `brew install ffmpeg` |
 | `yt-dlp is not installed` | Run `./setup.sh` |
-| Cookie read fails | Quit Chrome and retry |
+| macOS password prompt on every run | Run `uv run vat --export-cookies` once; subsequent runs use the saved file |
 | First transcription slow | Model download (~1.6GB); subsequent runs are fast |
 
 ## License

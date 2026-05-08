@@ -4,6 +4,7 @@ import traceback
 from pathlib import Path
 from typing import Any
 
+from vat.cookies import get_cookie_options
 from vat.utils import detect_source, sanitize_filename
 
 
@@ -22,7 +23,7 @@ def _build_ytdlp_options(
     }
 
     if use_cookies:
-        ydl_opts["cookiesfrombrowser"] = ("chrome", None, None, None)
+        ydl_opts.update(get_cookie_options())
 
     if output_filename:
         template = str(output_dir / f"{sanitize_filename(output_filename)}.%(ext)s")
@@ -140,10 +141,10 @@ def download_audio(
     try:
         import yt_dlp
 
-        # Step 1: Extract metadata (always try with cookies first)
+        # Step 1: Extract metadata
         info_opts = {"quiet": True}
         if source == "bilibili":
-            info_opts["cookiesfrombrowser"] = ("chrome", None, None, None)
+            info_opts.update(get_cookie_options())
 
         if source == "youtube":
             info_opts["extractor_args"] = {

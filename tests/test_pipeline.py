@@ -1,7 +1,5 @@
 """Simple sanity tests."""
 
-from pathlib import Path
-
 from vat.utils import detect_source, sanitize_filename
 
 

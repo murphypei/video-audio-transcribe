@@ -5,6 +5,7 @@ import json
 import sys
 from pathlib import Path
 
+from vat.cookies import export_cookies
 from vat.pipeline import process
 
 
@@ -32,7 +33,8 @@ Examples:
     )
     parser.add_argument(
         "inputs",
-        nargs="+",
+        nargs="*",
+        default=[],
         help="One or more URLs (YouTube/Bilibili) or local file paths",
     )
     parser.add_argument(
@@ -62,8 +64,25 @@ Examples:
         action="store_true",
         help="Output results as JSON lines",
     )
+    parser.add_argument(
+        "--export-cookies",
+        action="store_true",
+        help="Export Chrome cookies to local file and exit",
+    )
 
     args = parser.parse_args()
+
+    if not args.inputs and not args.export_cookies:
+        parser.error("No inputs provided. Use --export-cookies or provide URLs/file paths.")
+
+    if args.export_cookies:
+        result = export_cookies()
+        if result["success"]:
+            print(f"Cookies exported: {result['output_file']} ({result['cookie_count']} cookies)")
+            sys.exit(0)
+        else:
+            print(f"Cookie export failed: {result['error']}", file=sys.stderr)
+            sys.exit(1)
 
     results = []
     any_failed = False

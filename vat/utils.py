@@ -4,7 +4,6 @@ import re
 from pathlib import Path
 from urllib.parse import urlparse
 
-
 ILLEGAL_CHARS = re.compile(r'[\\/:*?"<>|]')
 
 
