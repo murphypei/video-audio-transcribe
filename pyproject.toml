@@ -1,0 +1,17 @@
+[project]
+name = "vat"
+version = "0.1.0"
+description = "Video audio extraction and local transcription pipeline"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "yt-dlp>=2026.3.17",
+    "mlx-whisper>=0.4.0",
+]
+
+[project.scripts]
+vat = "vat.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
